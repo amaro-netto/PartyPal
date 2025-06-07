@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "514360619678",
+    "project_id": "partypal-b9513",
+    "storage_bucket": "partypal-b9513.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514360619678:android:76bf0c98fd0f43270dc18f",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEnbLCFk6rFnu0YV3MGRVWDNmulfUTymo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
