@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({super.key});
 
   @override
   _AdminScreenState createState() => _AdminScreenState();
@@ -10,7 +10,7 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen> {
   final TextEditingController _partyNameController = TextEditingController();
   // Lista para armazenar os itens e quantidades
-  List<Map<String, String>> _items = [];
+  final List<Map<String, String>> _items = [];
 
   @override
   void dispose() {
@@ -76,8 +76,8 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 
   void _addItemDialog() {
-    final TextEditingController _itemController = TextEditingController();
-    final TextEditingController _quantityController = TextEditingController();
+    final TextEditingController itemController = TextEditingController();
+    final TextEditingController quantityController = TextEditingController();
 
     showDialog(
       context: context,
@@ -88,7 +88,7 @@ class _AdminScreenState extends State<AdminScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _itemController,
+                controller: itemController,
                 decoration: const InputDecoration(
                   labelText: 'Nome do Item',
                   border: OutlineInputBorder(),
@@ -96,7 +96,7 @@ class _AdminScreenState extends State<AdminScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _quantityController,
+                controller: quantityController,
                 decoration: const InputDecoration(
                   labelText: 'Quantidade',
                   border: OutlineInputBorder(),
@@ -110,23 +110,23 @@ class _AdminScreenState extends State<AdminScreen> {
               child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop(); // Fecha o diálogo
-                _itemController.dispose();
-                _quantityController.dispose();
+                itemController.dispose();
+                quantityController.dispose();
               },
             ),
             ElevatedButton(
               child: const Text('Adicionar'),
               onPressed: () {
-                if (_itemController.text.isNotEmpty && _quantityController.text.isNotEmpty) {
+                if (itemController.text.isNotEmpty && quantityController.text.isNotEmpty) {
                   setState(() {
                     _items.add({
-                      'item': _itemController.text,
-                      'quantity': _quantityController.text,
+                      'item': itemController.text,
+                      'quantity': quantityController.text,
                     });
                   });
                   Navigator.of(context).pop(); // Fecha o diálogo
-                  _itemController.dispose();
-                  _quantityController.dispose();
+                  itemController.dispose();
+                  quantityController.dispose();
                 } else {
                   // Opcional: mostrar um SnackBar ou outra indicação que os campos são obrigatórios
                 }
@@ -150,7 +150,7 @@ class _AdminScreenState extends State<AdminScreen> {
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({super.key});
 
   @override
   _AdminScreenState createState() => _AdminScreenState();
@@ -159,7 +159,7 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen> {
   final TextEditingController _partyNameController = TextEditingController();
   // Lista para armazenar os itens e quantidades
-  List<Map<String, String>> _items = [];
+  final List<Map<String, String>> _items = [];
 
   @override
   void dispose() {
@@ -168,8 +168,8 @@ class _AdminScreenState extends State<AdminScreen> {
   }
 
   void _addItemDialog() {
-    final TextEditingController _itemController = TextEditingController();
-    final TextEditingController _quantityController = TextEditingController();
+    final TextEditingController itemController = TextEditingController();
+    final TextEditingController quantityController = TextEditingController();
 
     showDialog(
       context: context,
@@ -180,7 +180,7 @@ class _AdminScreenState extends State<AdminScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _itemController,
+                controller: itemController,
                 decoration: const InputDecoration(
                   labelText: 'Nome do Item',
                   border: OutlineInputBorder(),
@@ -188,7 +188,7 @@ class _AdminScreenState extends State<AdminScreen> {
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _quantityController,
+                controller: quantityController,
                 decoration: const InputDecoration(
                   labelText: 'Quantidade',
                   border: OutlineInputBorder(),
@@ -202,23 +202,23 @@ class _AdminScreenState extends State<AdminScreen> {
               child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop(); // Fecha o diálogo
-                _itemController.dispose();
-                _quantityController.dispose();
+                itemController.dispose();
+                quantityController.dispose();
               },
             ),
             ElevatedButton(
               child: const Text('Adicionar'),
               onPressed: () {
-                if (_itemController.text.isNotEmpty && _quantityController.text.isNotEmpty) {
+                if (itemController.text.isNotEmpty && quantityController.text.isNotEmpty) {
                   setState(() {
                     _items.add({
-                      'item': _itemController.text,
-                      'quantity': _quantityController.text,
+                      'item': itemController.text,
+                      'quantity': quantityController.text,
                     });
                   });
                   Navigator.of(context).pop(); // Fecha o diálogo
-                  _itemController.dispose();
-                  _quantityController.dispose();
+                  itemController.dispose();
+                  quantityController.dispose();
                 } else {
                   // Opcional: mostrar um SnackBar ou outra indicação que os campos são obrigatórios
                 }
