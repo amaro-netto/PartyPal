@@ -81,7 +81,13 @@ flutter:
   # example:
   # fonts:
   #   - family: Schyler
-  #     fonts:
+  #     fonts:flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    # Certifique-se de que o caminho para a sua pasta de imagens está aqui
+
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
