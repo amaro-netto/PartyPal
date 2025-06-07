@@ -1,5 +1,6 @@
 // screens/auth/login_screen.dart
 
+import 'package:festa_facil/screens/auth/register_screen.dart'; // Importa a nova tela
 import 'package:flutter/material.dart';
 import 'package:festa_facil/services/auth_service.dart';
 
@@ -15,10 +16,18 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
 
+  // Função para navegar para a tela de registro
+  void _navigateToRegister() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login - Organizador")),
+      appBar: AppBar(title: const Text("Login - Organizador")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -26,27 +35,32 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: "E-mail"),
+              decoration: const InputDecoration(labelText: "E-mail"),
               keyboardType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: "Senha"),
+              decoration: const InputDecoration(labelText: "Senha"),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                // Tenta fazer o login quando o botão é pressionado
                 await _authService.signInWithEmailAndPassword(
                   _emailController.text,
                   _passwordController.text,
                 );
               },
-              child: Text("Entrar"),
+              child: const Text("Entrar"),
             ),
-             // TODO: Adicionar botão para ir para a tela de registro
+            const SizedBox(height: 10),
+
+            // BOTÃO ADICIONADO AQUI!
+            TextButton(
+              onPressed: _navigateToRegister,
+              child: const Text("Não tem uma conta? Cadastre-se"),
+            )
           ],
         ),
       ),
