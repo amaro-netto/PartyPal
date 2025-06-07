@@ -4,26 +4,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
-  // Pega a instância do banco de dados Firestore
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  // Pega a instância do Firebase Auth para saber quem está logado
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Função para criar um novo evento
+  // --- FUNÇÃO DE CRIAR EVENTO (JÁ EXISTIA) ---
   Future<void> createEvent(String eventName, DateTime eventDate, String description) async {
-    // Pega o usuário atualmente logado
     final User? user = _auth.currentUser;
-
-    // Se não houver usuário logado, não faz nada.
     if (user == null) return;
 
-    // Cria um novo documento na coleção "events"
     await _db.collection('events').add({
-      'organizerId': user.uid, // Salva o ID do organizador para saber quem criou
+      'organizerId': user.uid,
       'eventName': eventName,
-      'eventDate': Timestamp.fromDate(eventDate), // Converte DateTime para o formato do Firebase
+      'eventDate': Timestamp.fromDate(eventDate),
       'description': description,
-      'createdAt': FieldValue.serverTimestamp(), // Salva a data de criação
+      'createdAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  // --- NOVA FUNÇÃO ADICIONADA AQUI ---
+  // Retorna uma "corrente" de dados (Stream) com os eventos do usuário logado
+  Stream<QuerySnapshot> getEventsStream() {
+    final User? user = _auth.currentUser;
+    if (user == null) {
+      // Retorna uma stream vazia se não houver usuário
+      return const Stream.empty();
+    }
+
+    // Pega todos os eventos da coleção 'events' ONDE o 'organizerId' é igual
+    // ao ID do usuário logado, ordenados pela data de criação (mais novos primeiro).
+    return _db
+        .collection('events')
+        .where('organizerId', isEqualTo: user.uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots(); // .snapshots() é o que torna a consulta em tempo real!
   }
 }
