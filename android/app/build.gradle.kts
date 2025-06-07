@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.myapp"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "27.0.12077973" // CORREÇÃO 1: Versão do NDK
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -23,11 +23,12 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // CORREÇÃO 2: O ID da aplicação que o Firebase já conhece
         applicationId = "com.example.myapp"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+
+        // CORREÇÃO 3: A versão mínima do SDK do Android
+        minSdk = 23
+        
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
