@@ -1,10 +1,10 @@
 // screens/organizer/home_screen.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import necessário para o User
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:festa_facil/models/event_model.dart';
 import 'package:festa_facil/screens/organizer/create_event_screen.dart';
-import 'packagee:festa_facil/services/auth_service.dart';
+import 'package:festa_facil/services/auth_service.dart'; // LINHA CORRIGIDA
 import 'package:festa_facil/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -26,13 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     print("--- HomeScreen initState() CHAMADO ---");
 
-    // Mantemos a inicialização do stream de eventos
     _eventsStream = _firestoreService.getEventsStream();
     print("Stream de eventos inicializado.");
 
-    // --- NOSSO NOVO "ESPIÃO" ADICIONADO AQUI ---
-    // Ele vai escutar TODAS as mudanças no status de autenticação
-    // enquanto esta tela estiver ativa.
     _authService.authStateChanges.listen((User? user) {
       if (user == null) {
         print("!!! AuthState Listener na HomeScreen: O USUÁRIO FICOU NULO !!!");
