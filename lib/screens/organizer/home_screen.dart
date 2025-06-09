@@ -18,6 +18,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
   final FirestoreService _firestoreService = FirestoreService();
 
+  // --- MUDANÇA 1: Variável para guardar nossa conexão (Stream) ---
+  Stream<QuerySnapshot>? _eventsStream;
+
+  // --- MUDANÇA 2: O método initState() ---
+  // Este método é chamado APENAS UMA VEZ quando a tela é criada.
+  @override
+  void initState() {
+    super.initState();
+    // Nós iniciamos a conexão aqui e guardamos na nossa variável.
+    _eventsStream = _firestoreService.getEventsStream();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,16 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      // O corpo agora é um StreamBuilder
       body: StreamBuilder<QuerySnapshot>(
-        // Conecta-se à nossa nova função que "escuta" os eventos
-        stream: _firestoreService.getEventsStream(),
+        // --- MUDANÇA 3: Usamos a variável que guardamos, em vez de criar uma nova ---
+        stream: _eventsStream,
         builder: (context, snapshot) {
-          // Se estiver esperando dados, mostra uma tela de carregamento
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          // Se não houver dados ou a lista estiver vazia
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(
               child: Text(
@@ -51,22 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          // Se houver algum erro
           if (snapshot.hasError) {
             return const Center(child: Text("Ocorreu um erro!"));
           }
 
-          // Se tiver dados, pega a lista de documentos
           final eventDocs = snapshot.data!.docs;
 
-          // Usa um ListView.builder para construir a lista de forma eficiente
           return ListView.builder(
             itemCount: eventDocs.length,
             itemBuilder: (context, index) {
-              // Para cada documento, cria um objeto EventModel
               final event = EventModel.fromFirestore(eventDocs[index]);
 
-              // Cria um card bonito para exibir o evento
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
