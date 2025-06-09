@@ -1,9 +1,10 @@
 // screens/organizer/home_screen.dart
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import necessário para o User
 import 'package:festa_facil/models/event_model.dart';
 import 'package:festa_facil/screens/organizer/create_event_screen.dart';
-import 'package:festa_facil/services/auth_service.dart';
+import 'packagee:festa_facil/services/auth_service.dart';
 import 'package:festa_facil/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
@@ -18,20 +19,33 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
   final FirestoreService _firestoreService = FirestoreService();
 
-  // --- MUDANÇA 1: Variável para guardar nossa conexão (Stream) ---
   Stream<QuerySnapshot>? _eventsStream;
 
-  // --- MUDANÇA 2: O método initState() ---
-  // Este método é chamado APENAS UMA VEZ quando a tela é criada.
   @override
   void initState() {
     super.initState();
-    // Nós iniciamos a conexão aqui e guardamos na nossa variável.
+    print("--- HomeScreen initState() CHAMADO ---");
+
+    // Mantemos a inicialização do stream de eventos
     _eventsStream = _firestoreService.getEventsStream();
+    print("Stream de eventos inicializado.");
+
+    // --- NOSSO NOVO "ESPIÃO" ADICIONADO AQUI ---
+    // Ele vai escutar TODAS as mudanças no status de autenticação
+    // enquanto esta tela estiver ativa.
+    _authService.authStateChanges.listen((User? user) {
+      if (user == null) {
+        print("!!! AuthState Listener na HomeScreen: O USUÁRIO FICOU NULO !!!");
+      } else {
+        print(">>> AuthState Listener na HomeScreen: Usuário está PRESENTE. ID: ${user.uid}");
+      }
+    });
+    print("O 'espião' do status de autenticação foi ativado.");
   }
 
   @override
   Widget build(BuildContext context) {
+    print("--- HomeScreen build() CHAMADO ---");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Meus Eventos"),
@@ -45,9 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        // --- MUDANÇA 3: Usamos a variável que guardamos, em vez de criar uma nova ---
         stream: _eventsStream,
         builder: (context, snapshot) {
+          print("--- StreamBuilder se reconstruiu. Status da conexão: ${snapshot.connectionState} ---");
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -82,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: Text(
                       '${event.eventDate.day}/${event.eventDate.month}/${event.eventDate.year}'),
                   onTap: () {
-                    // TODO: Navegar para a tela de detalhes do evento
                     print("Evento selecionado: ${event.eventName}");
                   },
                 ),
